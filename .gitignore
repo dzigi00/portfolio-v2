@@ -1,0 +1,10 @@
+# Claude Code / local tooling
+.claude/
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.log
+
+# Dependencies (none currently, but just in case)
+node_modules/

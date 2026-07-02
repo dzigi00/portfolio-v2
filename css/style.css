@@ -453,6 +453,11 @@ section { position: relative; padding-left: var(--pad); padding-right: var(--pad
   body { font-size: 16px; }
   .nav__pill-item { padding: 8px 15px; font-size: 13px; }
   .nav__cta { padding: 10px 16px; }
+  /* mobile hero: lamp sits in a band up top, content flows cleanly below it */
+  .lamp { justify-content: flex-start; }
+  .lamp__lights { flex: 0 0 auto; height: 240px; margin-top: 78px; }
+  .lamp__content { transform: none; padding-top: 6px; }
+  .hero__title { line-height: 1.06; }
   .hero__bottom { flex-direction: column; align-items: flex-start; }
   .card { position: relative; top: 0; border-radius: 20px; }
   .browser { transform: none; }

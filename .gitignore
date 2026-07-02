@@ -8,3 +8,6 @@ Thumbs.db
 
 # Dependencies (none currently, but just in case)
 node_modules/
+
+# original full-size images (kept locally, not deployed)
+assets/originals/

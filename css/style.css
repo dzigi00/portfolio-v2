@@ -451,25 +451,30 @@ section { position: relative; padding-left: var(--pad); padding-right: var(--pad
 }
 @media (max-width: 768px) {
   body { font-size: 16px; }
-  .nav__pill-item { padding: 8px 15px; font-size: 13px; }
+  .nav__pill-item { padding: 7px 13px; font-size: 13px; }
   .nav__cta { padding: 10px 16px; }
-  /* mobile hero: lamp sits in a band up top, content flows cleanly below it */
+  /* mobile hero: a smaller lamp in a band up top, content centered below it */
   .lamp { justify-content: flex-start; }
-  .lamp__lights { flex: 0 0 auto; height: 240px; margin-top: 78px; }
-  .lamp__content { transform: none; padding-top: 6px; }
+  .lamp__lights { flex: 0 0 auto; height: 190px; margin-top: 116px; transform: none; }
+  .lamp__bloom { width: 118%; height: 12rem; }
+  .lamp__core { width: 13rem; height: 3.4rem; }
+  .lamp__line { width: 54vw; }
+  .lamp__cover { height: 7.5rem; }
+  .lamp__content { transform: none; padding-top: 8px; }
   .hero__title { line-height: 1.06; }
-  .hero__bottom { flex-direction: column; align-items: flex-start; }
-  .card { position: relative; top: 0; border-radius: 20px; }
-  .browser { transform: none; }
-  .card:hover .browser { transform: none; }
-  .impact__grid { grid-template-columns: 1fr; }
-  .stat { min-height: 0; padding: 26px 24px; }
   .tproj__frame { border-width: 3px; border-radius: 18px; }
   .tproj__foot { flex-direction: column; align-items: flex-start; }
   .tproj__stat { margin-left: 0; text-align: left; }
-  .contact__grid { grid-template-columns: 1fr; gap: 36px; }
-  .contact__photo { max-width: 300px; }
-  .approach__row { grid-template-columns: 44px 1fr; gap: 16px; }
+  /* contact centered on mobile */
+  .contact__grid { grid-template-columns: 1fr; gap: 30px; justify-items: center; }
+  .contact__photo { max-width: 300px; margin: 0 auto; }
+  .contact__info { text-align: center; }
+  .contact__actions { justify-content: center; }
+  .contact__socials { justify-content: center; }
+}
+/* phones: drop the pill nav (no room beside the signature + CTA) */
+@media (max-width: 640px) {
+  .nav__pill { display: none; }
 }
 
 /* ---------- Reduced motion ---------- */

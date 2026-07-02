@@ -229,6 +229,7 @@
     // Without GSAP/ScrollTrigger (or reduced motion), the frames stay flat — CSS default.
     if (!hasGSAP || typeof ScrollTrigger === "undefined" || reduceMotion) return;
     const isMobile = window.innerWidth <= 768;
+    const reveals = []; // header entrances, revealed via live position check
     frames.forEach((frame) => {
       const proj = frame.closest(".tproj");
       const head = proj.querySelector(".tproj__head");
@@ -243,13 +244,30 @@
           y: -26, ease: "none",
           scrollTrigger: { trigger: proj, start: "top 82%", end: "top 32%", scrub: 0.6 },
         });
-        // staggered entrance for the header pieces (category, name, description, tags)
-        gsap.from(head.children, {
-          y: 40, opacity: 0, filter: "blur(8px)", duration: 0.9, ease: "power3.out", stagger: 0.12,
-          scrollTrigger: { trigger: proj, start: "top 78%", once: true },
-        });
+        // hide the header pieces now; reveal them when the project actually enters
+        // the viewport (live getBoundingClientRect check — immune to layout shift,
+        // font loading, etc. so every project animates, not just the first ones)
+        gsap.set(head.children, { y: 40, opacity: 0, filter: "blur(8px)" });
+        reveals.push({ head: head, done: false });
       }
     });
+
+    function checkReveals() {
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      let remaining = 0;
+      reveals.forEach((r) => {
+        if (r.done) return;
+        const rect = r.head.getBoundingClientRect();
+        if (rect.top < vh * 0.82 && rect.bottom > 0) {
+          r.done = true;
+          gsap.to(r.head.children, { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.9, ease: "power3.out", stagger: 0.12 });
+        } else { remaining++; }
+      });
+      if (!remaining) { window.removeEventListener("scroll", checkReveals); if (lenis) lenis.off("scroll", checkReveals); }
+    }
+    window.addEventListener("scroll", checkReveals, { passive: true });
+    if (lenis) lenis.on("scroll", checkReveals);
+    checkReveals();
   }
 
   /* ---------------------------------------------------------
@@ -377,7 +395,15 @@
     initTubelight();
     initCursor();
     animateHero();
-    if (typeof ScrollTrigger !== "undefined") ScrollTrigger.refresh();
+    if (typeof ScrollTrigger !== "undefined") {
+      ScrollTrigger.refresh();
+      // reccompute trigger positions once everything (fonts, images) has loaded,
+      // so later projects still animate even after layout settles
+      window.addEventListener("load", () => ScrollTrigger.refresh());
+      document.querySelectorAll(".tproj__screen img").forEach((img) => {
+        if (!img.complete) img.addEventListener("load", () => ScrollTrigger.refresh(), { once: true });
+      });
+    }
   }
 
   if (document.readyState === "loading") {

@@ -108,19 +108,20 @@ section { position: relative; padding-left: var(--pad); padding-right: var(--pad
 /* ---------- HERO (LAMP) ---------- */
 .hero { position: relative; min-height: 100svh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
 .lamp { position: relative; width: 100%; min-height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
-.lamp__lights { position: relative; display: flex; width: 100%; flex: 1; align-items: center; justify-content: center; transform: scaleY(1.25); isolation: isolate; }
+/* every lamp piece is sized from --ls, so the lamp is the exact same shape at any scale */
+.lamp__lights { --ls: 1; position: relative; display: flex; width: 100%; flex: 1; align-items: center; justify-content: center; transform: scaleY(1.25); isolation: isolate; }
 
 /* downward cone of light, brightest at the tube, smoothly falling off */
 .lamp__bloom {
-  position: absolute; inset: auto; width: 60rem; max-width: 96vw; height: 26rem; transform: translateY(6rem); z-index: 25;
+  position: absolute; inset: auto; width: calc(60rem * var(--ls)); height: calc(26rem * var(--ls)); transform: translateY(calc(6rem * var(--ls))); z-index: 25;
   background: radial-gradient(ellipse 42% 58% at 50% 0%, rgba(34,211,238,0.50), rgba(8,180,216,0.13) 38%, transparent 72%);
 }
 /* concentrated hotspot right under the tube */
-.lamp__core { position: absolute; inset: auto; width: 24rem; height: 6rem; transform: translateY(-5rem); border-radius: 9999px; background: rgba(34,211,238,0.55); filter: blur(45px); z-index: 30; }
+.lamp__core { position: absolute; inset: auto; width: calc(24rem * var(--ls)); height: calc(6rem * var(--ls)); transform: translateY(calc(-5rem * var(--ls))); border-radius: 9999px; background: rgba(34,211,238,0.55); filter: blur(calc(45px * var(--ls))); z-index: 30; }
 /* the glowing tube */
-.lamp__line { position: absolute; inset: auto; height: 2px; width: 28rem; max-width: 88vw; transform: translateY(-7rem); background: #22d3ee; border-radius: 2px; box-shadow: 0 0 20px 1px rgba(34,211,238,0.8), 0 0 60px 6px rgba(34,211,238,0.35); z-index: 50; }
-/* dark mask above the tube */
-.lamp__cover { position: absolute; inset: auto; height: 12rem; width: 100%; transform: translateY(-13rem); background: var(--bg); z-index: 40; }
+.lamp__line { position: absolute; inset: auto; height: 2px; width: calc(28rem * var(--ls)); transform: translateY(calc(-7rem * var(--ls))); background: #22d3ee; border-radius: 2px; box-shadow: 0 0 calc(20px * var(--ls)) 1px rgba(34,211,238,0.8), 0 0 calc(60px * var(--ls)) calc(6px * var(--ls)) rgba(34,211,238,0.35); z-index: 50; }
+/* dark mask above the tube (always full-width so it never shows edges) */
+.lamp__cover { position: absolute; inset: auto; height: calc(12rem * var(--ls)); width: 100%; transform: translateY(calc(-13rem * var(--ls))); background: var(--bg); z-index: 40; }
 
 .lamp__content { position: relative; z-index: 50; transform: translateY(-11rem); display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0 24px; width: 100%; max-width: 880px; margin: 0 auto; }
 .hero__eyebrow {
@@ -455,9 +456,8 @@ section { position: relative; padding-left: var(--pad); padding-right: var(--pad
   /* mobile hero: the whole lamp is scaled down as one piece (keeps the line
      and glow connected), sat below the nav; content flows below it */
   .lamp { justify-content: flex-start; }
-  .lamp__lights { flex: 0 0 auto; height: 360px; margin-top: 30px; transform: scale(0.58); transform-origin: center 42%; }
-  .lamp__cover { display: none; } /* the opaque mask becomes a visible box when scaled; not needed on mobile */
-  .lamp__content { transform: none; margin-top: -70px; padding-top: 0; }
+  .lamp__lights { --ls: 0.58; flex: 0 0 auto; height: calc(30rem * var(--ls)); margin-top: 96px; transform: scaleY(1.25); }
+  .lamp__content { transform: none; margin-top: calc(10rem * var(--ls)); padding-top: 0; }
   .hero__title { line-height: 1.06; }
   .tproj__frame { border-width: 3px; border-radius: 18px; }
   .tproj__foot { flex-direction: column; align-items: flex-start; }
@@ -473,10 +473,9 @@ section { position: relative; padding-left: var(--pad); padding-right: var(--pad
 @media (max-width: 640px) {
   .nav__pill { display: none; }
 }
-/* phones: smaller lamp + tighter gap so it stays proportional to the screen */
+/* phones: same lamp, one notch smaller */
 @media (max-width: 480px) {
-  .lamp__lights { transform: scale(0.5); margin-top: 40px; }
-  .lamp__content { margin-top: -104px; }
+  .lamp__lights { --ls: 0.5; }
 }
 
 /* ---------- Reduced motion ---------- */

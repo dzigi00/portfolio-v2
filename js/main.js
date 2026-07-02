@@ -143,10 +143,12 @@
   function animateHero() {
     if (!hasGSAP || reduceMotion) return;
     const tl = gsap.timeline({ delay: 0.1 });
-    // Lamp "switches on" — flares, line and core grow out from the centre.
-    tl.from(".lamp__line", { width: "8rem", duration: 0.9, ease: "power2.inOut" }, 0)
-      .from(".lamp__core", { width: "8rem", opacity: 0, duration: 0.9, ease: "power2.inOut" }, 0)
-      .from(".lamp__bloom", { opacity: 0, duration: 1, ease: "power2.out" }, 0)
+    // Lamp "switches on" — line and core grow out from the centre.
+    // clearProps removes GSAP's inline styles afterwards so the responsive
+    // CSS (--ls sizing) stays in control if the viewport changes.
+    tl.from(".lamp__line", { width: "8rem", duration: 0.9, ease: "power2.inOut", clearProps: "width" }, 0)
+      .from(".lamp__core", { width: "8rem", opacity: 0, duration: 0.9, ease: "power2.inOut", clearProps: "width,opacity" }, 0)
+      .from(".lamp__bloom", { opacity: 0, duration: 1, ease: "power2.out", clearProps: "opacity" }, 0)
       .from(".lamp__content > *", { y: 30, opacity: 0, duration: 0.8, ease: "power3.out", stagger: 0.12 }, 0.35);
   }
 
